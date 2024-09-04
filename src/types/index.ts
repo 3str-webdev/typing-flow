@@ -3,4 +3,10 @@ export type TypingFlowConfig<Elem extends HTMLElement> = {
 	attr: keyof Elem;
 };
 
+export type RendererConfig = {
+	mode: "default" | "lite";
+	charClass: string[];
+	charWithCursorClass: string[];
+};
+
 export * from "./node";

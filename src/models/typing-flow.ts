@@ -1,8 +1,9 @@
-import { Cursor } from "./cursor";
-import { Queue } from "./queue";
 import { execute } from "../shared/lib/generator";
 import { isTextNode } from "../shared/lib/node";
-import type { TypingFlowConfig, TypingNode } from "../types";
+import type { RendererConfig, TypingFlowConfig, TypingNode } from "../types";
+import { Cursor } from "./cursor";
+import { Queue } from "./queue";
+import { Renderer } from "./renderer";
 
 export class TypingFlow<Elem extends HTMLElement = HTMLElement> {
 	private _selector: string;
@@ -31,10 +32,23 @@ export class TypingFlow<Elem extends HTMLElement = HTMLElement> {
 		attr: "innerHTML",
 	};
 
-	constructor(selector: string, config: Partial<TypingFlowConfig<Elem>> = {}) {
+	private _renderer: Renderer;
+
+	constructor(
+		selector: string,
+		config: Partial<TypingFlowConfig<Elem> & RendererConfig> = {},
+	) {
 		this._selector = selector;
 
-		this.config(config);
+		const { mode, charClass, charWithCursorClass, ...typingConfig } = config;
+
+		this._renderer = new Renderer({
+			mode,
+			charClass,
+			charWithCursorClass,
+		});
+
+		this.config(typingConfig);
 	}
 
 	private _movePtrLeft() {
@@ -63,7 +77,13 @@ export class TypingFlow<Elem extends HTMLElement = HTMLElement> {
 		return new Promise((resolve) => {
 			setTimeout(() => {
 				this._nodeHandlers[node.type](node);
-				this._render();
+
+				this._renderer.render({
+					container: this._container,
+					queue: this._typingQueue,
+					cursor: this._cursor,
+				});
+
 				resolve();
 			}, node.delay);
 		});
@@ -108,10 +128,6 @@ export class TypingFlow<Elem extends HTMLElement = HTMLElement> {
 				if (this._cursor.position < this._typingQueue.length) {
 					this._typingQueue.delete(this._cursor.position);
 				}
-
-				// this._cursor.nextWhile((node) => {
-				// 	return !["text", "tag"].includes(node.type);
-				// });
 			}
 		};
 	}
