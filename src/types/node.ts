@@ -30,3 +30,13 @@ export type TypingNode =
 	| ClearTypingNode
 	| MoveTypingNode
 	| DeleteTypingNode;
+
+type BaseNodeOptions = {
+	interval?: number;
+};
+
+export type TextNodeOptions = BaseNodeOptions;
+export type TagNodeOptions = BaseNodeOptions;
+export type MoveNodeOptions = BaseNodeOptions & { instant?: boolean };
+export type BackspaceNodeOptions = BaseNodeOptions & { instant?: boolean };
+export type DeleteNodeOptions = BaseNodeOptions & { instant?: boolean };

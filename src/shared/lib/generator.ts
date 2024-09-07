@@ -1,5 +1,5 @@
 export function execute<T>(
-	generator: Generator<Promise<T>, unknown>,
+	generator: Generator<Promise<T>>,
 	yieldValue?: unknown,
 ) {
 	const next = generator.next(yieldValue);

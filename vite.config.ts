@@ -11,5 +11,10 @@ export default defineConfig({
 			formats: ["es", "cjs"],
 		},
 	},
+	resolve: {
+		alias: {
+			"@": resolve(__dirname, "src"),
+		},
+	},
 	plugins: [dts({ insertTypesEntry: true })],
 });

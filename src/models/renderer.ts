@@ -1,5 +1,5 @@
-import { addManyClasses } from "../shared/lib/helpers";
-import type { RendererConfig, TypingNode } from "../types";
+import { addManyClasses } from "@/shared/lib/helpers";
+import type { RendererConfig, TypingNode } from "@/types";
 import type { Cursor } from "./cursor";
 import type { Queue } from "./queue";
 
@@ -63,7 +63,7 @@ export class Renderer {
 		for (let i = 0; i < queue.length; i++) {
 			const node = queue[i];
 
-			if (node.type !== "text") {
+			if (node.type !== "text" && node.type !== "tag") {
 				continue;
 			}
 
@@ -71,12 +71,16 @@ export class Renderer {
 
 			const withCursor = i === cursor.position;
 
-			const charHtmlNode = this._createCharElement({
-				value,
-				withCursor,
-			});
+			if (node.type === "tag") {
+				container.innerHTML += value;
+			} else {
+				const charHtmlNode = this._createCharElement({
+					value,
+					withCursor,
+				});
 
-			container.appendChild(charHtmlNode);
+				container.appendChild(charHtmlNode);
+			}
 		}
 
 		const tailHiddenElement = this._createCharElement({

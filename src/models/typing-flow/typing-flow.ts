@@ -1,19 +1,14 @@
-import { execute } from "../shared/lib/generator";
-import { isTextNode } from "../shared/lib/node";
-import type { RendererConfig, TypingFlowConfig, TypingNode } from "../types";
-import { Cursor } from "./cursor";
-import { Queue } from "./queue";
-import { Renderer } from "./renderer";
+import { Renderer } from "@/models/renderer";
+import { execute } from "@/shared/lib/generator";
+import { isTextNode } from "@/shared/lib/node";
+import type { RendererConfig, TypingFlowConfig, TypingNode } from "@/types";
+import { TypingFlowBase } from "./typing-flow-base";
 
-export class TypingFlow<Elem extends HTMLElement = HTMLElement> {
+export class TypingFlow<
+	Elem extends HTMLElement = HTMLElement,
+> extends TypingFlowBase<Elem> {
 	private _selector: string;
 	private _container: Elem;
-
-	private _nodesQueue: Queue<TypingNode> = new Queue();
-	protected _typingQueue: Queue<TypingNode> = new Queue();
-	protected _cursor = new Cursor<Queue<TypingNode>, TypingNode>(
-		this._typingQueue,
-	);
 
 	private _nodeHandlers: Record<
 		TypingNode["type"],
@@ -27,20 +22,17 @@ export class TypingFlow<Elem extends HTMLElement = HTMLElement> {
 		delay: () => {},
 	};
 
-	private _config: TypingFlowConfig<Elem> = {
-		interval: 200,
-		attr: "innerHTML",
-	};
-
 	private _renderer: Renderer;
 
 	constructor(
 		selector: string,
 		config: Partial<TypingFlowConfig<Elem> & RendererConfig> = {},
 	) {
-		this._selector = selector;
-
 		const { mode, charClass, charWithCursorClass, ...typingConfig } = config;
+
+		super(typingConfig);
+
+		this._selector = selector;
 
 		this._renderer = new Renderer({
 			mode,
@@ -63,17 +55,7 @@ export class TypingFlow<Elem extends HTMLElement = HTMLElement> {
 		});
 	}
 
-	protected _render() {
-		this._container[this._config.attr] = this._typingQueue
-			.map((node) => {
-				if ("value" in node) {
-					return node.value;
-				}
-			})
-			.join("") as Elem[keyof Elem];
-	}
-
-	private _addTypingNode(node: TypingNode): Promise<void> {
+	private _handleTypingNode(node: TypingNode): Promise<void> {
 		return new Promise((resolve) => {
 			setTimeout(() => {
 				this._nodeHandlers[node.type](node);
@@ -138,7 +120,6 @@ export class TypingFlow<Elem extends HTMLElement = HTMLElement> {
 
 			this._typingQueue.insert(this._cursor.position, node);
 			this._cursor.next();
-			console.log(this._cursor.position);
 		};
 
 		this._nodeHandlers.text = handler;
@@ -147,93 +128,8 @@ export class TypingFlow<Elem extends HTMLElement = HTMLElement> {
 
 	private *_typing() {
 		for (const node of this._nodesQueue) {
-			yield this._addTypingNode(node);
+			yield this._handleTypingNode(node);
 		}
-	}
-
-	public config(config: Partial<TypingFlowConfig<Elem>>) {
-		this._config = { ...this._config, ...config };
-
-		return this;
-	}
-
-	public type(text: string) {
-		for (let i = 0; i < text.length; i++) {
-			this._nodesQueue.push({
-				type: "text",
-				value: text[i],
-				delay: this._config.interval,
-			});
-		}
-
-		return this;
-	}
-
-	public tag(tag: string) {
-		this._nodesQueue.push({
-			type: "tag",
-			value: tag,
-			delay: this._config.interval,
-		});
-
-		return this;
-	}
-
-	public delay(ms: number) {
-		this._nodesQueue.push({ type: "delay", delay: ms });
-
-		return this;
-	}
-
-	public clear() {
-		this._nodesQueue.push({ type: "clear", delay: 0 });
-
-		return this;
-	}
-
-	public moveCursor(delta: number, options: { instant?: boolean } = {}) {
-		const direction = delta < 0 ? "left" : "right";
-		const delay = options.instant ? 0 : this._config.interval;
-
-		for (let i = 0; i < Math.abs(delta); i++) {
-			this._nodesQueue.push({
-				type: "move",
-				delay,
-				direction,
-			});
-		}
-
-		return this;
-	}
-
-	public backspace(amount: number, options: { instant?: boolean } = {}) {
-		const direction = "left";
-		const delay = options.instant ? 0 : this._config.interval;
-
-		for (let i = 0; i < amount; i++) {
-			this._nodesQueue.push({
-				type: "delete",
-				delay,
-				direction,
-			});
-		}
-
-		return this;
-	}
-
-	public delete(amount: number, options: { instant?: boolean } = {}) {
-		const direction = "right";
-		const delay = options.instant ? 0 : this._config.interval;
-
-		for (let i = 0; i < amount; i++) {
-			this._nodesQueue.push({
-				type: "delete",
-				delay,
-				direction,
-			});
-		}
-
-		return this;
 	}
 
 	public start() {

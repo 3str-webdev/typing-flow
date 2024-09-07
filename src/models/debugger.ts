@@ -1,6 +1,4 @@
-import { TypingFlow } from "./typing-flow";
-
-import "../styles/debugger-styles.css";
+import { TypingFlow } from "./typing-flow/typing-flow";
 
 export class Debugger<Elem extends HTMLElement> extends TypingFlow<Elem> {
 	private _debugSelector: string;
