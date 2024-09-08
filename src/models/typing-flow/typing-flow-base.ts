@@ -4,6 +4,7 @@ import { choiceFirstTruthful } from "@/shared/lib/helpers";
 import type {
 	BackspaceNodeOptions,
 	DeleteNodeOptions,
+	MoveCursorDelta,
 	MoveNodeOptions,
 	TagNodeOptions,
 	TextNodeOptions,
@@ -67,15 +68,24 @@ export class TypingFlowBase<Elem extends HTMLElement = HTMLElement> {
 		return this;
 	}
 
-	public moveCursor(delta: number, options: MoveNodeOptions = {}) {
-		const direction = delta < 0 ? "left" : "right";
+	public moveCursor(delta: MoveCursorDelta, options: MoveNodeOptions = {}) {
+		let direction: "left" | "right" | "START" | "END" = "left";
+		let numericDelta = 1;
+
+		if (typeof delta === "number") {
+			numericDelta = delta;
+			direction = delta < 0 ? "left" : "right";
+		} else {
+			direction = delta;
+		}
+
 		const delay = choiceFirstTruthful(
 			[options.instant, 0],
 			options.interval,
 			this._config.interval,
 		);
 
-		for (let i = 0; i < Math.abs(delta); i++) {
+		for (let i = 0; i < Math.abs(numericDelta); i++) {
 			this._nodesQueue.push({
 				type: "move",
 				delay,

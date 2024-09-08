@@ -12,7 +12,7 @@ export class TypingFlow<
 
 	private _nodeHandlers: Record<
 		TypingNode["type"],
-		(node: TypingNode) => void
+		(node: TypingNode, index: number) => void
 	> = {
 		clear: () => {},
 		move: () => {},
@@ -55,10 +55,10 @@ export class TypingFlow<
 		});
 	}
 
-	private _handleTypingNode(node: TypingNode): Promise<void> {
+	private _handleTypingNode(node: TypingNode, index: number): Promise<void> {
 		return new Promise((resolve) => {
 			setTimeout(() => {
-				this._nodeHandlers[node.type](node);
+				this._nodeHandlers[node.type](node, index);
 
 				this._renderer.render({
 					container: this._container,
@@ -80,8 +80,28 @@ export class TypingFlow<
 	}
 
 	private _registerMoveHandler() {
-		this._nodeHandlers.move = (node) => {
+		this._nodeHandlers.move = (node, index) => {
 			if (node.type !== "move") return;
+
+			// Replace node with "START" or "END" direction to chain of "left" and "right" move nodes
+			if (node.direction === "START" || node.direction === "END") {
+				// result chain direction
+				const direction = node.direction === "START" ? "left" : "right";
+
+				// calculate amount of nodes to move
+				const amountOfNodes =
+					direction === "left"
+						? index
+						: this._typingQueue.length - this._cursor.position + 1;
+
+				this._nodesQueue.delete(index);
+
+				for (let i = 0; i < amountOfNodes; i++) {
+					this._nodesQueue.insert(index + i, { ...node, direction });
+				}
+
+				return;
+			}
 
 			if (node.direction === "left") {
 				this._movePtrLeft();
@@ -127,8 +147,9 @@ export class TypingFlow<
 	}
 
 	private *_typing() {
-		for (const node of this._nodesQueue) {
-			yield this._handleTypingNode(node);
+		for (let i = 0; i < this._nodesQueue.length; i++) {
+			const node = this._nodesQueue[i];
+			yield this._handleTypingNode(node, i);
 		}
 	}
 

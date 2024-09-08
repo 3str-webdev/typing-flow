@@ -16,7 +16,7 @@ type DelayTypingNode = BaseTypingNode<"delay">;
 type ClearTypingNode = BaseTypingNode<"clear">;
 
 type MoveTypingNode = BaseTypingNode<"move"> & {
-	direction: "left" | "right";
+	direction: "left" | "right" | "START" | "END";
 };
 
 type DeleteTypingNode = BaseTypingNode<"delete"> & {
@@ -40,3 +40,5 @@ export type TagNodeOptions = BaseNodeOptions;
 export type MoveNodeOptions = BaseNodeOptions & { instant?: boolean };
 export type BackspaceNodeOptions = BaseNodeOptions & { instant?: boolean };
 export type DeleteNodeOptions = BaseNodeOptions & { instant?: boolean };
+
+export type MoveCursorDelta = number | "START" | "END";
