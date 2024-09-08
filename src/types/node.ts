@@ -31,8 +31,9 @@ export type TypingNode =
 	| MoveTypingNode
 	| DeleteTypingNode;
 
-type BaseNodeOptions = {
+export type BaseNodeOptions = {
 	interval?: number;
+	delay?: number;
 };
 
 export type TextNodeOptions = BaseNodeOptions;
