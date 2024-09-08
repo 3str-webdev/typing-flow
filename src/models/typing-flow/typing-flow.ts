@@ -1,7 +1,12 @@
 import { Renderer } from "@/models/renderer";
 import { execute } from "@/shared/lib/generator";
 import { isTextNode } from "@/shared/lib/node";
-import type { RendererConfig, TypingFlowConfig, TypingNode } from "@/types";
+import type {
+	RendererConfig,
+	TypingFlowConfig,
+	TypingFlowHooks,
+	TypingNode,
+} from "@/types";
 import { TypingFlowBase } from "./typing-flow-base";
 
 export class TypingFlow<
@@ -22,15 +27,32 @@ export class TypingFlow<
 		delay: () => {},
 	};
 
+	private _hooks: TypingFlowHooks = {
+		onStart: () => {},
+		onFinish: () => {},
+	};
+
 	private _renderer: Renderer;
 
 	constructor(
 		selector: string,
-		config: Partial<TypingFlowConfig<Elem> & RendererConfig> = {},
+		config: Partial<
+			TypingFlowConfig<Elem> & RendererConfig & TypingFlowHooks
+		> = {},
 	) {
-		const { mode, charClass, charWithCursorClass, ...typingConfig } = config;
+		const {
+			mode,
+			charClass,
+			charWithCursorClass,
 
-		super(typingConfig);
+			// hooks
+			onStart,
+			onFinish,
+
+			...baseConfig
+		} = config;
+
+		super(baseConfig);
 
 		this._selector = selector;
 
@@ -40,7 +62,12 @@ export class TypingFlow<
 			charWithCursorClass,
 		});
 
-		this.config(typingConfig);
+		this._hooks = {
+			...this._hooks,
+			onStart,
+			onFinish,
+		};
+		this.config(baseConfig);
 	}
 
 	private _movePtrLeft() {
@@ -153,7 +180,7 @@ export class TypingFlow<
 		}
 	}
 
-	public start() {
+	public async start() {
 		const container = document.querySelector(this._selector) as Elem | null;
 
 		if (container === null) {
@@ -169,7 +196,11 @@ export class TypingFlow<
 		this._registerDeleteHandler();
 		this._registerTextHandler();
 
-		execute(this._typing());
+		this._hooks.onStart();
+
+		await execute(this._typing());
+
+		this._hooks.onFinish();
 
 		return this;
 	}

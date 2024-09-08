@@ -9,4 +9,9 @@ export type RendererConfig = {
 	charWithCursorClass: string[];
 };
 
+export type TypingFlowHooks = {
+	onStart: () => void;
+	onFinish: () => void;
+};
+
 export * from "./node";

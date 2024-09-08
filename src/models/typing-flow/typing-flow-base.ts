@@ -120,8 +120,6 @@ export class TypingFlowBase<Elem extends HTMLElement = HTMLElement> {
 				computedOptions.interval,
 			);
 
-			console.log("Backspace delay", options, computedOptions);
-
 			for (let i = 0; i < amount; i++) {
 				this._nodesQueue.push({
 					type: "delete",
