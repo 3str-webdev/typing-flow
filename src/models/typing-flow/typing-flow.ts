@@ -65,8 +65,15 @@ export class TypingFlow<
 		this._hooks = {
 			...this._hooks,
 			onStart,
-			onFinish,
+			onFinish: () => {
+				onFinish();
+
+				if (baseConfig.loop) {
+					this.start();
+				}
+			},
 		};
+
 		this.config(baseConfig);
 	}
 

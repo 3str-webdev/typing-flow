@@ -34,6 +34,7 @@ export class TypingFlowBase<Elem extends HTMLElement = HTMLElement> {
 	protected _config: TypingFlowConfig<Elem> = {
 		interval: 200,
 		attr: "innerHTML",
+		loop: false,
 	};
 
 	constructor(config: Partial<TypingFlowConfig<Elem>> = {}) {
