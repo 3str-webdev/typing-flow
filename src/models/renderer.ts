@@ -48,7 +48,11 @@ export class Renderer {
 			);
 		}
 
-		charHtmlNode.innerHTML = options.value;
+		if (options.value === " ") {
+			charHtmlNode.innerHTML = "&nbsp;";
+		} else {
+			charHtmlNode.innerHTML = options.value;
+		}
 
 		return charHtmlNode;
 	};
