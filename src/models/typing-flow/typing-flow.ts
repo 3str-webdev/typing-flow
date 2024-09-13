@@ -5,9 +5,12 @@ import type {
 	RendererConfig,
 	TypingFlowConfig,
 	TypingFlowHooks,
+	TypingFlowHooksAliases,
 	TypingNode,
 } from "@/types";
 import { TypingFlowBase } from "./typing-flow-base";
+import { callFunctionsArray } from "@/shared/lib/helpers";
+import { hooksAliasesMap } from "@/shared/lib/hooks";
 
 export class TypingFlow<
 	Elem extends HTMLElement = HTMLElement,
@@ -28,26 +31,20 @@ export class TypingFlow<
 	};
 
 	private _hooks: TypingFlowHooks = {
-		onStart: () => {},
-		onFinish: () => {},
+		onStart: [],
+		onFinish: [],
 	};
 
 	private _renderer: Renderer;
 
 	constructor(
 		selector: string,
-		config: Partial<
-			TypingFlowConfig<Elem> & RendererConfig & TypingFlowHooks
-		> = {},
+		config: Partial<TypingFlowConfig<Elem> & RendererConfig> = {},
 	) {
 		const {
 			mode,
 			charClass,
 			charWithCursorClass,
-
-			// hooks
-			onStart,
-			onFinish,
 
 			...baseConfig
 		} = config;
@@ -62,17 +59,9 @@ export class TypingFlow<
 			charWithCursorClass,
 		});
 
-		this._hooks = {
-			...this._hooks,
-			onStart,
-			onFinish: () => {
-				onFinish();
-
-				if (baseConfig.loop) {
-					this.start();
-				}
-			},
-		};
+		if (baseConfig.loop) {
+			this._hooks.onFinish.push(this.start);
+		}
 
 		this.config(baseConfig);
 	}
@@ -187,7 +176,14 @@ export class TypingFlow<
 		}
 	}
 
-	public async start() {
+	public on(alias: TypingFlowHooksAliases, fn: () => void) {
+		const key = hooksAliasesMap[alias];
+		this._hooks[key].push(fn);
+		return this;
+	}
+
+	// This is arrow function because we need to access to "this" of TypingFlow
+	public start = async () => {
 		const container = document.querySelector(this._selector) as Elem | null;
 
 		if (container === null) {
@@ -203,12 +199,12 @@ export class TypingFlow<
 		this._registerDeleteHandler();
 		this._registerTextHandler();
 
-		this._hooks.onStart();
+		callFunctionsArray(...this._hooks.onStart);
 
 		await execute(this._typing());
 
-		this._hooks.onFinish();
+		callFunctionsArray(...this._hooks.onFinish);
 
 		return this;
-	}
+	};
 }

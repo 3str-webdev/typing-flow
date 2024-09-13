@@ -11,8 +11,10 @@ export type RendererConfig = {
 };
 
 export type TypingFlowHooks = {
-	onStart: () => void;
-	onFinish: () => void;
+	onStart: (() => void)[];
+	onFinish: (() => void)[];
 };
+
+export type TypingFlowHooksAliases = "start" | "finish";
 
 export * from "./node";

@@ -17,3 +17,9 @@ export const choiceFirstTruthful = <T>(...values: (T | [unknown, T])[]) => {
 
 	return null;
 };
+
+export const callFunctionsArray = <T>(...fns: (() => void)[]) => {
+	for (const fn of fns) {
+		fn();
+	}
+};
