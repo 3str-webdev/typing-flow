@@ -11,6 +11,8 @@ import type {
 import { TypingFlowBase } from "./typing-flow-base";
 import { callFunctionsArray } from "@/shared/lib/helpers";
 import { hooksAliasesMap } from "@/shared/lib/hooks";
+import { Queue } from "../queue";
+import { Cursor } from "../cursor";
 
 export class TypingFlow<
 	Elem extends HTMLElement = HTMLElement,
@@ -99,6 +101,8 @@ export class TypingFlow<
 			if (node.type !== "clear") return;
 
 			this._container[this._config.attr] = "" as Elem[keyof Elem];
+			this._typingQueue = new Queue();
+			this._cursor = new Cursor(this._typingQueue);
 		};
 	}
 
