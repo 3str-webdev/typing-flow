@@ -61,10 +61,6 @@ export class TypingFlow<
 			charWithCursorClass,
 		});
 
-		if (baseConfig.loop) {
-			this._hooks.onFinish.push(this.start);
-		}
-
 		this.config(baseConfig);
 	}
 
@@ -202,6 +198,10 @@ export class TypingFlow<
 		this._registerMoveHandler();
 		this._registerDeleteHandler();
 		this._registerTextHandler();
+
+		if (this._config.loop) {
+			this._hooks.onFinish.push(this.start);
+		}
 
 		callFunctionsArray(...this._hooks.onStart);
 
