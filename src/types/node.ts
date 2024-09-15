@@ -20,7 +20,7 @@ type MoveTypingNode = BaseTypingNode<"move"> & {
 };
 
 type DeleteTypingNode = BaseTypingNode<"delete"> & {
-	direction: "left" | "right";
+	direction: "left" | "right" | "START" | "END";
 };
 
 export type TypingNode =

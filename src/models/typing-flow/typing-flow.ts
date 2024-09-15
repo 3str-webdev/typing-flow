@@ -137,8 +137,25 @@ export class TypingFlow<
 	}
 
 	private _registerDeleteHandler() {
-		this._nodeHandlers.delete = (node) => {
+		this._nodeHandlers.delete = (node, index) => {
 			if (node.type !== "delete") return;
+
+			if (node.direction === "END" || node.direction === "START") {
+				const direction = node.direction === "END" ? "right" : "left";
+
+				const amountOfNodes =
+					direction === "left"
+						? index
+						: this._typingQueue.length - this._cursor.position + 1;
+
+				this._nodesQueue.delete(index);
+
+				for (let i = 0; i < amountOfNodes; i++) {
+					this._nodesQueue.insert(index + i, { ...node, direction });
+				}
+
+				return;
+			}
 
 			if (node.direction === "left") {
 				if (this._cursor.position === 0) return;

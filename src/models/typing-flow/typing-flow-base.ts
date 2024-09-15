@@ -112,16 +112,24 @@ export class TypingFlowBase<Elem extends HTMLElement = HTMLElement> {
 		return this;
 	}
 
-	public backspace(amount: number, options: BackspaceNodeOptions = {}) {
+	public backspace(
+		amount: number | "START",
+		options: BackspaceNodeOptions = {},
+	) {
 		this._nodeOptionsMiddleware(options, (computedOptions) => {
-			const direction = "left";
+			const direction = amount === "START" ? "START" : "left";
+			let numericAmount = 1;
 
 			const delay = choiceFirstTruthful(
 				[options.instant, 0],
 				computedOptions.interval,
 			);
 
-			for (let i = 0; i < amount; i++) {
+			if (amount !== "START") {
+				numericAmount = amount;
+			}
+
+			for (let i = 0; i < numericAmount; i++) {
 				this._nodesQueue.push({
 					type: "delete",
 					delay,
@@ -133,16 +141,21 @@ export class TypingFlowBase<Elem extends HTMLElement = HTMLElement> {
 		return this;
 	}
 
-	public delete(amount: number, options: DeleteNodeOptions = {}) {
+	public delete(amount: number | "END", options: DeleteNodeOptions = {}) {
 		this._nodeOptionsMiddleware(options, (computedOptions) => {
-			const direction = "right";
+			const direction = amount === "END" ? "END" : "right";
+			let numericAmount = 1;
 
 			const delay = choiceFirstTruthful(
 				[options.instant, 0],
 				computedOptions.interval,
 			);
 
-			for (let i = 0; i < amount; i++) {
+			if (amount !== "END") {
+				numericAmount = amount;
+			}
+
+			for (let i = 0; i < numericAmount; i++) {
 				this._nodesQueue.push({
 					type: "delete",
 					delay,
