@@ -33,7 +33,7 @@ flow.start();
 const flow = new TypingFlow(".selector", {
 	mode: "lite" | "default",
 	interval: 150,
-    attr: "innerHTML",
+	attr: "innerHTML",
 	loop: false,
 	charClass: ["class1", "class2", ...],
 	charWithCursorClass: ["cursorClass1", "cursorClass2", ...],
