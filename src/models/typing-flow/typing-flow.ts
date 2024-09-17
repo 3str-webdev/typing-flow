@@ -114,7 +114,7 @@ export class TypingFlow<
 				// calculate amount of nodes to move
 				const amountOfNodes =
 					direction === "left"
-						? index
+						? index + 1
 						: this._typingQueue.length - this._cursor.position + 1;
 
 				this._nodesQueue.delete(index);
@@ -145,7 +145,7 @@ export class TypingFlow<
 
 				const amountOfNodes =
 					direction === "left"
-						? index
+						? index + 1
 						: this._typingQueue.length - this._cursor.position + 1;
 
 				this._nodesQueue.delete(index);
