@@ -1,35 +1,45 @@
 {
-  "name": "typing-flow",
-  "version": "0.0.1",
-  "description": "Flow typing",
-  "license": "MIT",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    },
-    "./styles": {
-      "require": "./dist/style.css",
-      "import": "./dist/style.css"
-    }
+	"name": "typing-flow",
+	"version": "0.1.1",
+	"description": "Npm package for typing animation for web",
+	"keywords": [
+		"typing",
+		"animation",
+		"utility",
+		"npm",
+		"node",
+		"web",
+		"typescript"
+	],
+	"author": "sergey-frey",
+	"repository": {
+    "type": "git",
+    "url": "https://github.com/sergey-frey/typing-flow"
   },
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "dev": "vite build --watch",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "@types/node": "^22.5.2",
-    "prettier": "^3.3.3",
-    "typescript": "^5.5.4",
-    "vite": "^5.4.2",
-    "vite-plugin-dts": "^4.1.0"
-  }
+	"license": "MIT",
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"require": "./dist/index.js",
+			"import": "./dist/index.mjs",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"dev": "vite build --watch",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"devDependencies": {
+		"@types/node": "^22.5.2",
+		"prettier": "^3.3.3",
+		"typescript": "^5.5.4",
+		"vite": "^5.4.2",
+		"vite-plugin-dts": "^4.1.0"
+	}
 }
