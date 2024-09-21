@@ -13,10 +13,11 @@
 	],
 	"author": "sergey-frey",
 	"repository": {
-    "type": "git",
-    "url": "https://github.com/sergey-frey/typing-flow"
-  },
+		"type": "git",
+		"url": "https://github.com/sergey-frey/typing-flow"
+	},
 	"license": "MIT",
+	"type": "module",
 	"main": "./dist/index.js",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
