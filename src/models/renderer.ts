@@ -35,7 +35,7 @@ export class Renderer {
 		withCursor: boolean;
 	}) => {
 		const isSpace = options.value === " ";
-		const charHtmlNode = document.createElement(isSpace ? "span" : "pre");
+		const charHtmlNode = document.createElement(isSpace ? "pre" : "span");
 
 		addManyClasses(
 			charHtmlNode,
