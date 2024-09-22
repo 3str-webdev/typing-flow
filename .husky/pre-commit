@@ -1,2 +1,4 @@
 npm run build
-npm version patch
+npm version patch --no-git-tag-version
+git add package.json
+git add package-lock.json
