@@ -34,7 +34,8 @@ export class Renderer {
 		value: string;
 		withCursor: boolean;
 	}) => {
-		const charHtmlNode = document.createElement("span");
+		const isSpace = options.value === " ";
+		const charHtmlNode = document.createElement(isSpace ? "span" : "pre");
 
 		addManyClasses(
 			charHtmlNode,
@@ -48,11 +49,7 @@ export class Renderer {
 			);
 		}
 
-		if (options.value === " ") {
-			charHtmlNode.innerHTML = "&nbsp;";
-		} else {
-			charHtmlNode.innerHTML = options.value;
-		}
+		charHtmlNode.innerHTML = options.value;
 
 		return charHtmlNode;
 	};
