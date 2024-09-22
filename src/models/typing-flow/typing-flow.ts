@@ -199,6 +199,12 @@ export class TypingFlow<
 		return this;
 	}
 
+	private async _executeFlow() {
+		callFunctionsArray(...this._hooks.onStart);
+		await execute(this._typing());
+		callFunctionsArray(...this._hooks.onFinish);
+	}
+
 	// This is arrow function because we need to access to "this" of TypingFlow
 	public start = async () => {
 		const container = document.querySelector(this._selector) as Elem | null;
@@ -217,14 +223,10 @@ export class TypingFlow<
 		this._registerTextHandler();
 
 		if (this._config.loop) {
-			this._hooks.onFinish.push(this.start);
+			this._hooks.onFinish.push(() => this._executeFlow());
 		}
 
-		callFunctionsArray(...this._hooks.onStart);
-
-		await execute(this._typing());
-
-		callFunctionsArray(...this._hooks.onFinish);
+		this._executeFlow();
 
 		return this;
 	};
