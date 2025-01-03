@@ -6,8 +6,8 @@
 		"moduleResolution": "Bundler",
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["src/*"]
+			"@/*": ["./src/*"]
 		}
 	},
-	"include": ["src"]
+	"include": ["src", "main.ts"]
 }
