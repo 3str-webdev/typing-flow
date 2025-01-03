@@ -1,11 +1,10 @@
 ## Typing Flow
 
-> Powerful utility for creating typing animations on your website.
+### Powerful utility for creating typing animations on your website.
 
 - Tiny ⬇️
 - Zero dependencies 🕊️
 - Full TypeSafety 🔒
-- Chain design 🔗
 
 ### Installation
 
@@ -17,153 +16,168 @@ npm i typing-flow
 
 ### Usage
 
-```ts
-import { TypingFlow } from "typing-flow";
+You should make sure that at the time the animation starts, the element with the specified selector is rendered in the DOM.
 
-const flow = new TypingFlow(".containerSelector", options).type("Hello, Flow!");
+```ts
+import { backspace, browserRenderer, text, TypingFlow } from "typing-flow";
+
+const flow = new TypingFlow({
+	selector: ".test",
+	renderer: browserRenderer(),
+	loop: true,
+}).commands([
+	text("Hello, world!!!", {
+		delay: 200,
+		instant: false,
+	}),
+	backspace({ amount: 15, delay: 200, instant: false }),
+]);
 
 flow.start();
 ```
 
-<br />
-
 ### Configuration
 
 ```ts
-const flow = new TypingFlow(".selector", {
-	mode: "lite" | "default",
-	interval: 150,
-	attr: "innerHTML",
-	loop: false,
-	charClass: ["class1", "class2", ...],
-	charWithCursorClass: ["cursorClass1", "cursorClass2", ...],
+new TypingFlow({
+	selector: ".test", // selector of animation container
+	renderer: browserRenderer(), // function for displaying animation state
+	loop: true, // should the animation be looped
 });
 ```
 
-- `mode` - Property for setting animation mode. In **default** mode every visible symbol wraps into `<span>`. This makes styling easier. The **lite** mode means that text will be typed as simple string. It's comfortable for simple animations and "streaming" animation to other attributes different `innerHTML`.
-- `interval` - Property for setting default interval between two "presses on keys".
-- `attr` - Property for setting container attribute for streaming flow. In **default** mode attr property can be `innerHTML` only. In **lite** mode you can set any attribute of flow container (value, placeholder, data-\*).
-- `loop` - Animation should be replay on finish if `loop: true`.
-- `charClass` - List of classes for `<span>` wrapper around symbols in **default** mode. Each of this classes will be applied to every **visible** symbol.
-- `charWithCursorClass` - List of classes for `<span>` wrapper around single symbol with cursor.
-  > Note: cursor always pinned to symbol. Cursor should be displayed **before** symbol with equal position.
+### Renderers
 
-<br />
+TypingFlow operates on "nodes" to build a typing snapshot. Renderer is a function that should render a snapshot after processing each command. The package has several ready-made renderers.
+
+#### Browser Renderer
+
+Will display each character by wrapping it in a `span` with the specified classes. TypingFlow does not provide any styles. You can customize the display as you like.
+
+```ts
+type BrowserRendererConfig = {
+	baseNodeClasses?: string[]; // default: typing-node
+	nodeWithCursorClasses?: string[]; // default: typing-node_with-cursor
+};
+
+browserRenderer({
+	baseNodeClasses: ["typing-node"],
+	nodeWithCursorClasses: ["typing-node_with-cursor"],
+});
+```
+
+#### Attribute Renderer
+
+Translates the current state of the animation into the specified container attributes.
+
+```ts
+attributeRenderer<HTMLInputElement>(["placeholder", "data-text"]);
+```
+
+#### Custom Renderer
+
+Renderer is a function like this:
+
+```ts
+const someRenderer = (
+	container: HTMLElement,
+	typingSnapshot: TypingSnapshot,
+) => {
+	// render behavior
+};
+```
+
+If you want to parametrize the renderer, you can do it like this:
+
+```ts
+// definition
+const someRenderer = (...args: unknown[]): RendererType => {
+	return (container, typingSnapshot) => {
+		// render behavior
+	};
+};
+
+// usage
+new TypingFlow({
+	selector: ".test",
+	renderer: someRenderer(...args),
+});
+```
 
 ### API
 
-`flow.type(text: string, [options])`
+TypingFlow has a very simple API.
 
-Method to add text for "typing". Text can include spaces and any symbols.
+#### Commands
+
+You can create a flow with the `commands` method. It accepts an array of commands.
 
 ```ts
-flow.type("Some text");
+new TypingFlow({
+	selector: ".test",
+	renderer: browserRenderer(),
+}).commands([
+	// array of commands
+]);
 ```
 
-<br />
+**Supported commands:**
 
-`flow.config([options])`
+- `text`
+- `backspace`
+- `delete`
+- `cursorLeft`
+- `cursorRight`
+- `delay`
 
-Method to configure flow. You can setting options: `interval | attr | loop |`.
+#### Hooks
 
-```ts
-flow
-	.type("First text") // typing with interval 150 (default)
-	.config({
-		interval: 70,
-	})
-	.type("Second text"); // typing with interval 70 (configured)
-```
+You can do anything during the animation's lifecycle with **hooks**.
+TypingFlow supports the following hooks:
 
-<br />
-
-`flow.tag(tag: string, [options])`
-
-Method to add tag to flow. Support only single tags.
+- `onStart`
+- `onFinish`
 
 ```ts
-flow.tag("<br />");
-```
-
-<br />
-
-`flow.delay(ms: number)`
-
-Method to add delay in animation. You can enter any delay in ms.
-
-```ts
-flow.delay(2000); // 2 sec
-```
-
-<br />
-
-`flow.moveCursor(diff: number, [options])`
-
-Method to move cursor around **visible** typed symbols. You can enter position different as int.
-
-```ts
-flow1.type("Hello").moveCursor(-2); // Hel|lo
-
-flow2.type("Hello").moveCursor(-4).moveCursor(1); // He|llo
-```
-
-<br />
-
-`flow.backspace(amount: number, [options])`
-
-Method to delete symbols on **left** side of cursor position. You can enter amount of symbols for deleting as int.
-
-```ts
-flow.type("Hello").backspace(2); // Hel|
-```
-
-<br />
-
-`flow.delete(amount: number, [options])`
-
-Method to delete symbols on **right** side of cursor position. You can enter amount of symbols for deleting as int.
-
-```ts
-flow.type("Hello").moveCursor(-2).delete(2); // Hel|
-```
-
-<br />
-
-`flow.on(event: "start" | "finish", cb: () => void)`
-
-Method to add animation hook. You can subscribe and apply callbacks on some animation lifecycle events.
-
-**Available events**: start | finish
-
-```ts
-flow
-	.type("Hello")
+new TypingFlow({
+	selector: ".test",
+	renderer: browserRenderer(),
+})
 	.on("start", () => {
-		console.log("Flow Start");
+		console.log("Animation started");
 	})
 	.on("finish", () => {
-		console.log("Flow Finish");
+		console.log("Animation finished");
 	});
 ```
 
-<br />
-
-### Utils
-
-`chainedFlows(...flows: TypingFlow[])`
-
-Utility for chaining many flows in one animation. Each flow will be start on finish prevent flow.
-
-`loop` will be disabled for all flows in chain.
-
-> This function return ref on **first** flow in chain.
+Also you can apply many callbacks to the same hook like this:
 
 ```ts
-const flow1 = new TypingFlow(".flow1").type("Hello");
+new TypingFlow({
+	selector: ".test",
+	renderer: browserRenderer(),
+})
+	.on("start", () => {
+		console.log("Animation started");
+	})
+	.on("start", () => {
+		console.log("Animation started again");
+	});
+```
 
-const flow2 = new TypingFlow(".flow2").type("Flow");
+### Types
 
-const resultFlow = chainedFlows(flow1, flow2); // resultFlow === flow1;
+TypingFlow exports the following types:
 
-resultFlow.start();
+```ts
+type TypingSnapshot = {
+	content: Array<string>;
+	cursorPosition: number;
+};
+
+type RendererType = (
+	container: HTMLElement,
+	typingSnapshot: TypingSnapshot,
+) => void;
 ```

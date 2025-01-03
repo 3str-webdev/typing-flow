@@ -1,2 +1,4 @@
 dist
 node_modules
+/main.ts
+/index.html
