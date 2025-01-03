@@ -125,7 +125,7 @@ new TypingFlow({
 
 - `text`
 - `backspace`
-- `delete`
+- `del`
 - `cursorLeft`
 - `cursorRight`
 - `delay`
