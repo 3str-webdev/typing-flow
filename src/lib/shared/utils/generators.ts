@@ -1,25 +1,25 @@
 const executeFn = <T>(
-	generator: Generator<Promise<T>>,
-	yieldValue?: unknown,
-	onFinish?: () => void,
+  generator: Generator<Promise<T>>,
+  yieldValue?: unknown,
+  onFinish?: () => void,
 ) => {
-	const next = generator.next(yieldValue);
+  const next = generator.next(yieldValue);
 
-	if (!next.done) {
-		next.value.then(
-			(result) => executeFn(generator, result, onFinish),
-			(err) => generator.throw(err),
-		);
-	} else {
-		onFinish?.();
-	}
+  if (!next.done) {
+    next.value.then(
+      (result) => executeFn(generator, result, onFinish),
+      (err) => generator.throw(err),
+    );
+  } else {
+    onFinish?.();
+  }
 };
 
 export function execute<T>(
-	generator: Generator<Promise<T>>,
-	yieldValue?: unknown,
+  generator: Generator<Promise<T>>,
+  yieldValue?: unknown,
 ) {
-	return new Promise<void>((resolve) => {
-		executeFn(generator, yieldValue, resolve);
-	});
+  return new Promise<void>((resolve) => {
+    executeFn(generator, yieldValue, resolve);
+  });
 }

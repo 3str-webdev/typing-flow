@@ -12,8 +12,6 @@
 npm i typing-flow
 ```
 
-<br />
-
 ### Usage
 
 You should make sure that at the time the animation starts, the element with the specified selector is rendered in the DOM.
@@ -22,15 +20,15 @@ You should make sure that at the time the animation starts, the element with the
 import { backspace, browserRenderer, text, TypingFlow } from "typing-flow";
 
 const flow = new TypingFlow({
-	selector: ".test",
-	renderer: browserRenderer(),
-	loop: true,
+  selector: ".test",
+  renderer: browserRenderer(),
+  loop: true,
 }).commands([
-	text("Hello, world!!!", {
-		delay: 200,
-		instant: false,
-	}),
-	backspace({ amount: 15, delay: 200, instant: false }),
+  text("Hello, world!!!", {
+    delay: 200,
+    instant: false,
+  }),
+  backspace({ amount: 15, delay: 200, instant: false }),
 ]);
 
 flow.start();
@@ -40,9 +38,9 @@ flow.start();
 
 ```ts
 new TypingFlow({
-	selector: ".test", // selector of animation container
-	renderer: browserRenderer(), // function for displaying animation state
-	loop: true, // should the animation be looped
+  selector: ".test", // selector of animation container
+  renderer: browserRenderer(), // function for displaying animation state
+  loop: true, // should the animation be looped
 });
 ```
 
@@ -56,13 +54,13 @@ Will display each character by wrapping it in a `span` with the specified classe
 
 ```ts
 type BrowserRendererConfig = {
-	baseNodeClasses?: string[]; // default: typing-node
-	nodeWithCursorClasses?: string[]; // default: typing-node_with-cursor
+  baseNodeClasses?: string[]; // default: typing-node
+  nodeWithCursorClasses?: string[]; // default: typing-node_with-cursor
 };
 
 browserRenderer({
-	baseNodeClasses: ["typing-node"],
-	nodeWithCursorClasses: ["typing-node_with-cursor"],
+  baseNodeClasses: ["typing-node"],
+  nodeWithCursorClasses: ["typing-node_with-cursor"],
 });
 ```
 
@@ -80,10 +78,10 @@ Renderer is a function like this:
 
 ```ts
 const someRenderer = (
-	container: HTMLElement,
-	typingSnapshot: TypingSnapshot,
+  container: HTMLElement,
+  typingSnapshot: TypingSnapshot,
 ) => {
-	// render behavior
+  // render behavior
 };
 ```
 
@@ -92,15 +90,15 @@ If you want to parametrize the renderer, you can do it like this:
 ```ts
 // definition
 const someRenderer = (...args: unknown[]): RendererType => {
-	return (container, typingSnapshot) => {
-		// render behavior
-	};
+  return (container, typingSnapshot) => {
+    // render behavior
+  };
 };
 
 // usage
 new TypingFlow({
-	selector: ".test",
-	renderer: someRenderer(...args),
+  selector: ".test",
+  renderer: someRenderer(...args),
 });
 ```
 
@@ -114,10 +112,10 @@ You can create a flow with the `commands` method. It accepts an array of command
 
 ```ts
 new TypingFlow({
-	selector: ".test",
-	renderer: browserRenderer(),
+  selector: ".test",
+  renderer: browserRenderer(),
 }).commands([
-	// array of commands
+  // array of commands
 ]);
 ```
 
@@ -140,30 +138,30 @@ TypingFlow supports the following hooks:
 
 ```ts
 new TypingFlow({
-	selector: ".test",
-	renderer: browserRenderer(),
+  selector: ".test",
+  renderer: browserRenderer(),
 })
-	.on("start", () => {
-		console.log("Animation started");
-	})
-	.on("finish", () => {
-		console.log("Animation finished");
-	});
+  .on("start", () => {
+    console.log("Animation started");
+  })
+  .on("finish", () => {
+    console.log("Animation finished");
+  });
 ```
 
 Also you can apply many callbacks to the same hook like this:
 
 ```ts
 new TypingFlow({
-	selector: ".test",
-	renderer: browserRenderer(),
+  selector: ".test",
+  renderer: browserRenderer(),
 })
-	.on("start", () => {
-		console.log("Animation started");
-	})
-	.on("start", () => {
-		console.log("Animation started again");
-	});
+  .on("start", () => {
+    console.log("Animation started");
+  })
+  .on("start", () => {
+    console.log("Animation started again");
+  });
 ```
 
 ### Types
@@ -172,12 +170,12 @@ TypingFlow exports the following types:
 
 ```ts
 type TypingSnapshot = {
-	content: Array<string>;
-	cursorPosition: number;
+  content: Array<string>;
+  cursorPosition: number;
 };
 
 type RendererType = (
-	container: HTMLElement,
-	typingSnapshot: TypingSnapshot,
+  container: HTMLElement,
+  typingSnapshot: TypingSnapshot,
 ) => void;
 ```

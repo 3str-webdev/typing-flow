@@ -1,4 +1,4 @@
 export type BrowserRendererConfig = {
-	baseNodeClasses?: string[];
-	nodeWithCursorClasses?: string[];
+  baseNodeClasses?: string[];
+  nodeWithCursorClasses?: string[];
 };

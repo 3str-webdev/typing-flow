@@ -1,51 +1,51 @@
 {
-	"name": "typing-flow",
-	"version": "0.1.9",
-	"description": "Npm package for typing animation for web",
-	"keywords": [
-		"typing",
-		"animation",
-		"utility",
-		"npm",
-		"node",
-		"web",
-		"typescript"
-	],
-	"author": "sergey-frey",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/sergey-frey/typing-flow"
-	},
-	"license": "MIT",
-	"type": "module",
-	"main": "./dist/index.cjs",
-	"module": "./dist/index.mjs",
-	"types": "./dist/index.d.ts",
-	"exports": {
-		".": {
-			"require": "./dist/index.cjs",
-			"import": "./dist/index.js",
-			"types": "./dist/index.d.ts"
-		}
-	},
-	"files": [
-		"dist"
-	],
-	"scripts": {
-		"dev:ui": "vite",
-		"dev:lib": "vite build --watch",
-		"dev": "concurrently \"npm:dev:ui\" \"npm:dev:lib\"",
-		"build": "vite build",
-		"preview": "vite preview",
-		"prepare": "husky"
-	},
-	"devDependencies": {
-		"@types/node": "^22.5.2",
-		"concurrently": "^9.1.1",
-		"husky": "^9.1.6",
-		"prettier": "^3.3.3",
-		"typescript": "^5.5.4",
-		"vite": "^5.4.2",
-		"vite-plugin-dts": "^4.1.0"
-	}
+  "name": "typing-flow",
+  "version": "0.1.10",
+  "description": "Npm package for typing animation for web",
+  "keywords": [
+    "typing",
+    "animation",
+    "utility",
+    "npm",
+    "node",
+    "web",
+    "typescript"
+  ],
+  "author": "sergey-frey",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergey-frey/typing-flow"
+  },
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev:ui": "vite",
+    "dev:lib": "vite build --watch",
+    "dev": "concurrently \"npm:dev:ui\" \"npm:dev:lib\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.2",
+    "concurrently": "^9.1.1",
+    "husky": "^9.1.6",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2",
+    "vite-plugin-dts": "^4.1.0"
+  }
 }
