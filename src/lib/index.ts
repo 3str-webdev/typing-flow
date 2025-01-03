@@ -1,5 +1,5 @@
 export { TypingFlow } from "./core";
-export * from "./nodes";
+export { backspace, cursorLeft, cursorRight, del, delay, text } from "./nodes";
 export * from "./renderers";
 export { TypingFlowError } from "./shared/errors";
 
