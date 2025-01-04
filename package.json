@@ -1,6 +1,6 @@
 {
   "name": "typing-flow",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Npm package for typing animation for web",
   "keywords": [
     "typing",
@@ -35,6 +35,7 @@
     "dev:ui": "vite",
     "dev:lib": "vite build --watch",
     "dev": "concurrently \"npm:dev:ui\" \"npm:dev:lib\"",
+    "formate": "prettier . --write",
     "build": "vite build",
     "preview": "vite preview",
     "prepare": "husky"
