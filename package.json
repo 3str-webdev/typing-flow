@@ -1,6 +1,6 @@
 {
   "name": "typing-flow",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Npm package for typing animation for web",
   "keywords": [
     "typing",
@@ -16,6 +16,7 @@
     "type": "git",
     "url": "https://github.com/sergey-frey/typing-flow"
   },
+  "homepage": "https://typing-flow.gitbook.io/docs",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
