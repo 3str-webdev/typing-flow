@@ -9,7 +9,6 @@ export function simpleBrowserRenderer({
     rootContainer.innerHTML = "";
 
     console.log(typingSnapshot.content, typingSnapshot.cursorPosition);
-    
 
     // add a zero-width space for correct render empty content with cursor
     if (typingSnapshot.content.length === 0) {
