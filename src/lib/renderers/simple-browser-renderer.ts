@@ -1,14 +1,17 @@
 import { TypingSnapshot } from "@/lib/shared/types";
 import { BrowserRendererConfig } from "./renderer.types";
 
-export function browserRenderer({
+export function simpleBrowserRenderer({
   baseNodeClasses = ["typing-node"],
   nodeWithCursorClasses = ["typing-node_with-cursor"],
 }: BrowserRendererConfig = {}) {
-  return (container: HTMLElement, typingSnapshot: TypingSnapshot) => {
-    container.innerHTML = "";
+  return (rootContainer: HTMLElement, typingSnapshot: TypingSnapshot) => {
+    rootContainer.innerHTML = "";
 
-    // add a zero-width space for correct render cursor with empty content
+    console.log(typingSnapshot.content, typingSnapshot.cursorPosition);
+    
+
+    // add a zero-width space for correct render empty content with cursor
     if (typingSnapshot.content.length === 0) {
       typingSnapshot = {
         content: ["&#8203;"],
@@ -18,8 +21,9 @@ export function browserRenderer({
 
     for (let i = 0; i < typingSnapshot.content.length; i++) {
       const htmlWrapper = document.createElement("span");
+      const char = typingSnapshot.content[i];
 
-      htmlWrapper.innerHTML = typingSnapshot.content[i];
+      htmlWrapper.innerHTML = char;
 
       // it's important for correct render "space" symbols
       htmlWrapper.style.whiteSpace = "pre";
@@ -30,7 +34,7 @@ export function browserRenderer({
         htmlWrapper.classList.add(...baseNodeClasses);
       }
 
-      container.appendChild(htmlWrapper);
+      rootContainer.appendChild(htmlWrapper);
     }
   };
 }

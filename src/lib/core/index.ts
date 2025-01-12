@@ -36,6 +36,13 @@ export class TypingFlow<Elem extends HTMLElement = HTMLElement> {
           index,
         );
 
+        // console.log(
+        //   node.nodeBuilder(
+        //     this._container,
+        //     this._nodeHandlersModule.typingSnapshot,
+        //   ),
+        // );
+
         this._config.renderer(
           this._container,
           this._nodeHandlersModule.typingSnapshot,

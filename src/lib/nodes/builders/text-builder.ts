@@ -1,5 +1,7 @@
-import { CanBeArray } from "@/lib/shared/types";
+import { getBrowserNodeTagView } from "@/lib/shared/utils/browser";
 import { TextTypingNode } from "../nodes.types";
+
+const domParser = new DOMParser();
 
 export const text = (
   text: string,
@@ -7,16 +9,63 @@ export const text = (
     delay?: number;
     instant?: boolean;
   } = {},
-): CanBeArray<TextTypingNode> => {
-  return text.split("").map((char) => {
-    return {
-      type: "text",
-      nodeBuilder: (rootContainer) => ({
-        text: char,
-        delay: options.instant ? 0 : options.delay,
-        instant: options.instant ?? false,
-        container: rootContainer,
-      }),
-    };
-  });
+): Array<TextTypingNode> => {
+  const result: Array<TextTypingNode> = [];
+
+  const recursiveTextHandler = (browserNode: HTMLElement) => {
+    if (browserNode.nodeType === Node.TEXT_NODE) {
+      const newNodes = browserNode.textContent
+        .split("")
+        .map<TextTypingNode>((char) => ({
+          type: "text",
+          nodeBuilder: (rootContainer) => ({
+            text: char,
+            delay: options.instant ? 0 : options.delay,
+            instant: options.instant ?? false,
+            container: rootContainer,
+            isTag: false,
+          }),
+        }));
+
+      result.push(...newNodes);
+    } else if (browserNode.nodeType === Node.ELEMENT_NODE) {
+      const tagView = getBrowserNodeTagView(browserNode);
+
+      if (browserNode.tagName.toLowerCase() !== "body") {
+        result.push({
+          type: "text",
+          nodeBuilder: (rootContainer) => ({
+            text: tagView.open,
+            delay: 0,
+            instant: true,
+            container: rootContainer,
+            isTag: true,
+          }),
+        });
+      }
+
+      for (const child of browserNode.childNodes) {
+        recursiveTextHandler(child as HTMLElement);
+      }
+
+      if (browserNode.tagName.toLowerCase() !== "body") {
+        result.push({
+          type: "text",
+          nodeBuilder: (rootContainer) => ({
+            text: tagView.close,
+            delay: 0,
+            instant: true,
+            container: rootContainer,
+            isTag: true,
+          }),
+        });
+      }
+    }
+  };
+
+  const parsedText = domParser.parseFromString(text, "text/html").body;
+
+  recursiveTextHandler(parsedText);
+
+  return result;
 };

@@ -25,6 +25,7 @@ export type TextTypingNode = WithType<
     instant: boolean;
     delay: number;
     container: HTMLElement | ChildNode;
+    isTag: boolean;
   }>
 >;
 
