@@ -1,5 +1,5 @@
-import { backspace, TypingSnapshot } from "@/lib";
-import { backspaceTypingNodeHandler } from "@/lib/nodes";
+import { TypingSnapshot } from "@/lib";
+import { backspace, backspaceTypingNodeHandler } from "@/lib/nodes";
 import { BackspaceTypingNode } from "@/lib/nodes/nodes.types";
 import { describe, expect, test } from "vitest";
 

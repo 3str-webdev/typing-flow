@@ -1,5 +1,5 @@
-import { TypingSnapshot, cursorRight } from "@/lib";
-import { cursorMoveRightTypingNodeHandler } from "@/lib/nodes";
+import { TypingSnapshot } from "@/lib";
+import { cursorMoveRightTypingNodeHandler, cursorRight } from "@/lib/nodes";
 import { CursorMoveRightTypingNode } from "@/lib/nodes/nodes.types";
 import { describe, expect, test } from "vitest";
 

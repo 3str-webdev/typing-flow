@@ -1,9 +1,12 @@
 {
   "name": "typing-flow",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "Npm package for typing animation for web",
   "keywords": [
     "typing",
+    "flow",
+    "typing-flow",
+    "es6",
     "animation",
     "utility",
     "npm",
@@ -20,13 +23,23 @@
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "require": "./dist/index.cjs",
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./commands": {
+      "require": "./dist/commands.cjs",
+      "import": "./dist/commands.js",
+      "types": "./dist/commands.d.ts"
+    },
+    "./renderers": {
+      "require": "./dist/renderers.cjs",
+      "import": "./dist/renderers.js",
+      "types": "./dist/renderers.d.ts"
     }
   },
   "files": [

@@ -1,5 +1,5 @@
-import { del, TypingSnapshot } from "@/lib";
-import { deleteTypingNodeHandler } from "@/lib/nodes";
+import { TypingSnapshot } from "@/lib";
+import { del, deleteTypingNodeHandler } from "@/lib/nodes";
 import { DeleteTypingNode } from "@/lib/nodes/nodes.types";
 import { describe, expect, test } from "vitest";
 
