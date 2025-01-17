@@ -1,12 +1,25 @@
 import { TypingSnapshot } from "../types";
 import { isTagString } from "./browser";
 
-export const getTypingSnapshotIndexData = (typingSnapshot: TypingSnapshot) => {
-  let amountOfNonTagSymbols = 0;
+type TypingSnapshotIndexData = {
+  indexOfSymbolWithCursor: number;
+  lastNonTagSymbolIndex: number;
+  amountOfNonTagSymbols: number;
+};
+
+export const getTypingSnapshotIndexData = (
+  typingSnapshot: TypingSnapshot,
+): TypingSnapshotIndexData => {
+  const result: TypingSnapshotIndexData = {
+    indexOfSymbolWithCursor: -1,
+    lastNonTagSymbolIndex: null,
+    amountOfNonTagSymbols: 0,
+  };
 
   if (typingSnapshot.cursorPosition < 0)
     return {
       indexOfSymbolWithCursor: -1,
+      lastNonTagSymbolIndex: null,
       amountOfNonTagSymbols: 0,
     };
 
@@ -14,19 +27,14 @@ export const getTypingSnapshotIndexData = (typingSnapshot: TypingSnapshot) => {
     const currentSymbol = typingSnapshot.content[i];
 
     if (!isTagString(currentSymbol)) {
-      ++amountOfNonTagSymbols;
+      ++result.amountOfNonTagSymbols;
+      result.lastNonTagSymbolIndex = i;
     }
 
-    if (amountOfNonTagSymbols === typingSnapshot.cursorPosition + 1) {
-      return {
-        indexOfSymbolWithCursor: i,
-        amountOfNonTagSymbols,
-      };
+    if (result.amountOfNonTagSymbols === typingSnapshot.cursorPosition + 1) {
+      result.indexOfSymbolWithCursor = i;
     }
   }
 
-  return {
-    indexOfSymbolWithCursor: -1,
-    amountOfNonTagSymbols: 0,
-  };
+  return result;
 };

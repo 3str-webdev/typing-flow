@@ -25,7 +25,7 @@ import {
   simpleBrowserRenderer,
   text,
   TypingFlow,
-} from "@/lib";
+} from "typing-flow";
 
 // Step 1. Create instance
 const flow = new TypingFlow({

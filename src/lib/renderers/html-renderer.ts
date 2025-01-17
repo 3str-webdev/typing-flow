@@ -11,11 +11,7 @@ export function unstable_htmlRenderer({
 
     rootContainer.innerHTML = "";
 
-    console.log(typingSnapshot.content, typingSnapshot.cursorPosition);
-
     const recursiveRender = (browserNode: HTMLElement) => {
-      console.log(browserNode);
-
       if (browserNode.nodeType === Node.TEXT_NODE) {
         const textContent = browserNode.textContent;
         const wrappedChars: Node[] = [];
@@ -56,7 +52,6 @@ export function unstable_htmlRenderer({
       }
     };
 
-    console.log(typingSnapshot.content.join(""));
     const dom = (
       typingFlowDOMParser
         .parseFromString(typingSnapshot.content.join(""), "text/html")
@@ -68,7 +63,5 @@ export function unstable_htmlRenderer({
     dom.style.display = "contents";
 
     rootContainer.appendChild(dom);
-
-    console.log("-".repeat(100));
   };
 }

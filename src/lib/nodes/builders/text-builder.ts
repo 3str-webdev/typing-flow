@@ -1,5 +1,6 @@
 import { getBrowserNodeTagView } from "@/lib/shared/utils/browser";
 import { TextTypingNode } from "../nodes.types";
+import { isSpaceOnlyString } from "@/lib/shared/utils/strings";
 
 const domParser = new DOMParser();
 
@@ -62,6 +63,19 @@ export const text = (
       }
     }
   };
+
+  if (isSpaceOnlyString(text)) {
+    return text.split("").map((char) => ({
+      type: "text",
+      nodeBuilder: (rootContainer) => ({
+        text: char,
+        delay: options.instant ? 0 : options.delay,
+        instant: options.instant ?? false,
+        container: rootContainer,
+        isTag: false,
+      }),
+    }));
+  }
 
   const parsedText = domParser.parseFromString(text, "text/html").body;
 

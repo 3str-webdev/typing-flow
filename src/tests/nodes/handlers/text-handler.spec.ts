@@ -61,4 +61,75 @@ describe("text command", () => {
     expect(mockTypingSnapshot.content).toEqual(["<b>", "</b>"]);
     expect(mockTypingSnapshot.cursorPosition).toEqual(-1);
   });
+
+  test("text inserting", () => {
+    const mockTypingSnapshot: TypingSnapshot = {
+      content: ["a", "b", "c", "d"],
+      cursorPosition: 1,
+    };
+
+    const nodes = text("<span>ef</span>g", { instant: true });
+
+    for (const node of nodes) {
+      textTypingNodeHandler(node, mockTypingSnapshot, container);
+    }
+
+    expect(mockTypingSnapshot.content).toEqual([
+      "a",
+      "b",
+      "<span>",
+      "e",
+      "f",
+      "</span>",
+      "g",
+      "c",
+      "d",
+    ]);
+    expect(mockTypingSnapshot.cursorPosition).toEqual(4);
+  });
+
+  test("text inserting inside tag", () => {
+    const mockTypingSnapshot: TypingSnapshot = {
+      content: ["a", "b", "<span>", "e", "f", "</span>", "g"],
+      cursorPosition: 2,
+    };
+
+    const nodes = text("<i>h</i>", { instant: true });
+
+    for (const node of nodes) {
+      textTypingNodeHandler(node, mockTypingSnapshot, container);
+    }
+
+    expect(mockTypingSnapshot.content).toEqual([
+      "a",
+      "b",
+      "<span>",
+      "e",
+      "<i>",
+      "h",
+      "</i>",
+      "f",
+      "</span>",
+      "g",
+    ]);
+    expect(mockTypingSnapshot.cursorPosition).toEqual(3);
+  });
+
+  test("text inserting space", () => {
+    const mockTypingSnapshot: TypingSnapshot = {
+      content: ["a", "b", "c", "d"],
+      cursorPosition: 1,
+    };
+
+    const nodes = text(" ", { instant: true });
+
+    console.log(nodes);
+
+    for (const node of nodes) {
+      textTypingNodeHandler(node, mockTypingSnapshot, container);
+    }
+
+    expect(mockTypingSnapshot.content).toEqual(["a", "b", " ", "c", "d"]);
+    expect(mockTypingSnapshot.cursorPosition).toEqual(2);
+  });
 });
