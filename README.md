@@ -17,15 +17,15 @@ npm i typing-flow
 You should make sure that at the time the animation starts, the element with the specified selector is rendered in the DOM.
 
 ```ts
+import { TypingFlow } from "typing-flow";
+import { simpleBrowserRenderer } from "typing-flow/renderers";
 import {
   backspace,
   cursorLeft,
   cursorRight,
   delay,
-  simpleBrowserRenderer,
   text,
-  TypingFlow,
-} from "typing-flow";
+} from "typing-flow/commands";
 
 // Step 1. Create instance
 const flow = new TypingFlow({
