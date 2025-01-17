@@ -12,6 +12,10 @@
 npm i typing-flow
 ```
 
+### Demo
+
+See [Basic Demo](https://codesandbox.io/p/sandbox/typing-flow-demo-7fxjg8)
+
 ### Usage
 
 You should make sure that at the time the animation starts, the element with the specified selector is rendered in the DOM.
