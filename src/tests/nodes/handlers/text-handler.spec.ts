@@ -1,5 +1,6 @@
 import { TypingSnapshot } from "@/lib";
 import { text, textTypingNodeHandler } from "@/lib/nodes";
+import { MIN_POSSIBLE_CURSOR_POSITION } from "@/lib/shared/constants";
 import { describe, expect, test } from "vitest";
 
 const container = document.createElement("div");
@@ -49,7 +50,7 @@ describe("text command", () => {
   test("text without viewable symbols", () => {
     const mockTypingSnapshot: TypingSnapshot = {
       content: [],
-      cursorPosition: -1,
+      cursorPosition: MIN_POSSIBLE_CURSOR_POSITION,
     };
 
     const nodes = text("<b></b>", { instant: true });
@@ -59,7 +60,9 @@ describe("text command", () => {
     }
 
     expect(mockTypingSnapshot.content).toEqual(["<b>", "</b>"]);
-    expect(mockTypingSnapshot.cursorPosition).toEqual(-1);
+    expect(mockTypingSnapshot.cursorPosition).toEqual(
+      MIN_POSSIBLE_CURSOR_POSITION,
+    );
   });
 
   test("text inserting", () => {
@@ -122,8 +125,6 @@ describe("text command", () => {
     };
 
     const nodes = text(" ", { instant: true });
-
-    console.log(nodes);
 
     for (const node of nodes) {
       textTypingNodeHandler(node, mockTypingSnapshot, container);

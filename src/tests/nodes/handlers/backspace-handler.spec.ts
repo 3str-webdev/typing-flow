@@ -1,6 +1,7 @@
 import { TypingSnapshot } from "@/lib";
 import { backspace, backspaceTypingNodeHandler } from "@/lib/nodes";
 import { BackspaceTypingNode } from "@/lib/nodes/nodes.types";
+import { MIN_POSSIBLE_CURSOR_POSITION } from "@/lib/shared/constants";
 import { describe, expect, test } from "vitest";
 
 const container = document.createElement("div");
@@ -53,6 +54,8 @@ describe("backspace command", () => {
     backspaceTypingNodeHandler(node, mockTypingSnapshot, container);
 
     expect(mockTypingSnapshot.content).toEqual(["c", "d"]);
-    expect(mockTypingSnapshot.cursorPosition).toEqual(-1);
+    expect(mockTypingSnapshot.cursorPosition).toEqual(
+      MIN_POSSIBLE_CURSOR_POSITION,
+    );
   });
 });

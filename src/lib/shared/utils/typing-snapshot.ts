@@ -1,3 +1,4 @@
+import { MIN_POSSIBLE_CURSOR_POSITION } from "../constants";
 import { TypingSnapshot } from "../types";
 import { isTagString } from "./browser";
 
@@ -11,17 +12,10 @@ export const getTypingSnapshotIndexData = (
   typingSnapshot: TypingSnapshot,
 ): TypingSnapshotIndexData => {
   const result: TypingSnapshotIndexData = {
-    indexOfSymbolWithCursor: -1,
+    indexOfSymbolWithCursor: MIN_POSSIBLE_CURSOR_POSITION,
     lastNonTagSymbolIndex: null,
     amountOfNonTagSymbols: 0,
   };
-
-  if (typingSnapshot.cursorPosition < 0)
-    return {
-      indexOfSymbolWithCursor: -1,
-      lastNonTagSymbolIndex: null,
-      amountOfNonTagSymbols: 0,
-    };
 
   for (let i = 0; i < typingSnapshot.content.length; i++) {
     const currentSymbol = typingSnapshot.content[i];
@@ -34,6 +28,10 @@ export const getTypingSnapshotIndexData = (
     if (result.amountOfNonTagSymbols === typingSnapshot.cursorPosition + 1) {
       result.indexOfSymbolWithCursor = i;
     }
+  }
+
+  if (typingSnapshot.cursorPosition < 0) {
+    result.indexOfSymbolWithCursor = MIN_POSSIBLE_CURSOR_POSITION;
   }
 
   return result;

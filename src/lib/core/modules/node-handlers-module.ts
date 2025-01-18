@@ -4,6 +4,8 @@ import {
   cursorMoveRightTypingNodeHandler,
   delayTypingNodeHandler,
   deleteTypingNodeHandler,
+  endTypingNodeHandler,
+  homeTypingNodeHandler,
   TextTypingNode,
   textTypingNodeHandler,
   TypingNode,
@@ -33,6 +35,8 @@ export class NodeHandlersModule {
     cursorMoveLeft: this._handleCursorMoveLeftTypingNode.bind(this),
     cursorMoveRight: this._handleCursorMoveRightTypingNode.bind(this),
     delay: this._handleDelayTypingNode.bind(this),
+    home: this._handleHomeTypingNode.bind(this),
+    end: this._handleEndTypingNode.bind(this),
   };
 
   private _handleTextTypingNode(
@@ -72,6 +76,14 @@ export class NodeHandlersModule {
 
   private _handleDelayTypingNode() {
     delayTypingNodeHandler();
+  }
+
+  private _handleHomeTypingNode() {
+    homeTypingNodeHandler(this._typingSnapshot);
+  }
+
+  private _handleEndTypingNode() {
+    endTypingNodeHandler(this._typingSnapshot);
   }
 
   public get handlers() {

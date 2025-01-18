@@ -9,7 +9,7 @@ export function deleteTypingNodeHandler(
   typingSnapshot: TypingSnapshot,
   rootContainer: HTMLElement,
 ) {
-  if (typingSnapshot.cursorPosition < -1) return;
+  if (typingSnapshot.cursorPosition < MIN_POSSIBLE_CURSOR_POSITION) return;
 
   const buildedNode = node.nodeBuilder(rootContainer, typingSnapshot);
 

@@ -6,7 +6,9 @@ export type TypingNode =
   | DeleteTypingNode
   | CursorMoveLeftTypingNode
   | CursorMoveRightTypingNode
-  | DelayTypingNode;
+  | DelayTypingNode
+  | HomeTypingNode
+  | EndTypingNode;
 
 type WithType<T extends string, P> = {
   type: T;
@@ -66,3 +68,7 @@ export type CursorMoveRightTypingNode = WithType<
 >;
 
 export type DelayTypingNode = WithType<"delay", NodeBuilder<{ delay: number }>>;
+
+export type HomeTypingNode = WithType<"home", NodeBuilder<{ delay: 0 }>>;
+
+export type EndTypingNode = WithType<"end", NodeBuilder<{ delay: 0 }>>;

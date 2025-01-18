@@ -1,6 +1,7 @@
 import { TypingSnapshot } from "@/lib";
 import { cursorLeft, cursorMoveLeftTypingNodeHandler } from "@/lib/nodes";
 import { CursorMoveLeftTypingNode } from "@/lib/nodes/nodes.types";
+import { MIN_POSSIBLE_CURSOR_POSITION } from "@/lib/shared/constants";
 import { describe, expect, test } from "vitest";
 
 const container = document.createElement("div");
@@ -59,6 +60,8 @@ describe("cursorLeft command", () => {
       "</strong>",
       "d",
     ]);
-    expect(mockTypingSnapshot.cursorPosition).toEqual(-1);
+    expect(mockTypingSnapshot.cursorPosition).toEqual(
+      MIN_POSSIBLE_CURSOR_POSITION,
+    );
   });
 });

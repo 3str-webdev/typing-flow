@@ -1,6 +1,7 @@
 import { TypingSnapshot } from "@/lib";
 import { cursorMoveRightTypingNodeHandler, cursorRight } from "@/lib/nodes";
 import { CursorMoveRightTypingNode } from "@/lib/nodes/nodes.types";
+import { MIN_POSSIBLE_CURSOR_POSITION } from "@/lib/shared/constants";
 import { describe, expect, test } from "vitest";
 
 const container = document.createElement("div");
@@ -23,7 +24,7 @@ describe("cursorRight command", () => {
   test("cursorRight with tags", () => {
     const mockTypingSnapshot: TypingSnapshot = {
       content: ["a", "<strong>", "b", "c", "</strong>", "d"],
-      cursorPosition: -1,
+      cursorPosition: MIN_POSSIBLE_CURSOR_POSITION,
     };
 
     const node = cursorRight(2, { instant: true }) as CursorMoveRightTypingNode;
