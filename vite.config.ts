@@ -9,6 +9,7 @@ export default defineConfig({
         resolve(__dirname, "src", "lib", "index.ts"),
         resolve(__dirname, "src", "lib", "renderers.ts"),
         resolve(__dirname, "src", "lib", "commands.ts"),
+        resolve(__dirname, "src", "lib", "plugins.ts"),
       ],
       name: "TypingFlow",
       formats: ["es", "cjs"],
