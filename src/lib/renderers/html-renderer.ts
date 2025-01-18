@@ -1,6 +1,10 @@
 import { TypingSnapshot } from "@/lib/shared/types";
 import { typingFlowDOMParser } from "../shared/utils/browser";
 import { BrowserRendererConfig } from "./renderer.types";
+import {
+  MIN_POSSIBLE_CURSOR_POSITION,
+  ZERO_WIDTH_SPACE,
+} from "../shared/constants";
 
 export function unstable_htmlRenderer({
   baseNodeClasses = ["typing-node"],
@@ -57,6 +61,11 @@ export function unstable_htmlRenderer({
         .parseFromString(typingSnapshot.content.join(""), "text/html")
         .cloneNode(true) as Document
     ).body;
+
+    if (typingSnapshot.cursorPosition === MIN_POSSIBLE_CURSOR_POSITION) {
+      dom.innerHTML = ZERO_WIDTH_SPACE + dom.innerHTML;
+      typingSnapshot.cursorPosition = 0;
+    }
 
     recursiveRender(dom);
 

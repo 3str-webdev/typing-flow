@@ -1,5 +1,9 @@
 import { TypingSnapshot } from "@/lib/shared/types";
 import { BrowserRendererConfig } from "./renderer.types";
+import {
+  MIN_POSSIBLE_CURSOR_POSITION,
+  ZERO_WIDTH_SPACE,
+} from "../shared/constants";
 
 export function simpleBrowserRenderer({
   baseNodeClasses = ["typing-node"],
@@ -9,9 +13,9 @@ export function simpleBrowserRenderer({
     rootContainer.innerHTML = "";
 
     // add a zero-width space for correct render empty content with cursor
-    if (typingSnapshot.content.length === 0) {
+    if (typingSnapshot.cursorPosition === MIN_POSSIBLE_CURSOR_POSITION) {
       typingSnapshot = {
-        content: ["&#8203;"],
+        content: [ZERO_WIDTH_SPACE, ...typingSnapshot.content],
         cursorPosition: 0,
       };
     }
