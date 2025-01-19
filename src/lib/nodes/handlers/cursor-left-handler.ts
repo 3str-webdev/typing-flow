@@ -5,9 +5,8 @@ import { CursorMoveLeftTypingNode } from "../nodes.types";
 export function cursorMoveLeftTypingNodeHandler(
   node: CursorMoveLeftTypingNode,
   typingSnapshot: TypingSnapshot,
-  rootContainer: HTMLElement,
 ) {
-  const buildedNode = node.nodeBuilder(rootContainer, typingSnapshot);
+  const buildedNode = node.nodeBuilder(typingSnapshot);
 
   typingSnapshot.cursorPosition = Math.max(
     typingSnapshot.cursorPosition - buildedNode.distance,

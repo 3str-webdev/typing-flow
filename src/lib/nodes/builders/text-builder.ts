@@ -19,11 +19,10 @@ export const text = (
         .split("")
         .map<TextTypingNode>((char) => ({
           type: "text",
-          nodeBuilder: (rootContainer) => ({
+          nodeBuilder: () => ({
             text: char,
             delay: options.instant ? 0 : options.delay,
             instant: options.instant ?? false,
-            container: rootContainer,
             isTag: false,
           }),
         }));
@@ -35,11 +34,10 @@ export const text = (
       if (browserNode.tagName.toLowerCase() !== "body") {
         result.push({
           type: "text",
-          nodeBuilder: (rootContainer) => ({
+          nodeBuilder: () => ({
             text: tagView.open,
             delay: 0,
             instant: true,
-            container: rootContainer,
             isTag: true,
           }),
         });
@@ -52,11 +50,10 @@ export const text = (
       if (browserNode.tagName.toLowerCase() !== "body") {
         result.push({
           type: "text",
-          nodeBuilder: (rootContainer) => ({
+          nodeBuilder: () => ({
             text: tagView.close,
             delay: 0,
             instant: true,
-            container: rootContainer,
             isTag: true,
           }),
         });
@@ -67,11 +64,10 @@ export const text = (
   if (isSpaceOnlyString(text)) {
     return text.split("").map((char) => ({
       type: "text",
-      nodeBuilder: (rootContainer) => ({
+      nodeBuilder: () => ({
         text: char,
         delay: options.instant ? 0 : options.delay,
         instant: options.instant ?? false,
-        container: rootContainer,
         isTag: false,
       }),
     }));

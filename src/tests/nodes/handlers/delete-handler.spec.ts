@@ -5,8 +5,6 @@ import { MIN_POSSIBLE_CURSOR_POSITION } from "@/lib/shared/constants";
 import { describe, expect, test } from "vitest";
 
 describe("delete command", () => {
-  const container = document.createElement("div");
-
   test("delete basic", () => {
     const mockTypingSnapshot: TypingSnapshot = {
       content: ["a", "b", "c", "d"],
@@ -15,7 +13,7 @@ describe("delete command", () => {
 
     const node = del({ amount: 2, instant: true }) as DeleteTypingNode;
 
-    deleteTypingNodeHandler(node, mockTypingSnapshot, container);
+    deleteTypingNodeHandler(node, mockTypingSnapshot);
 
     expect(mockTypingSnapshot.content).toEqual(["a", "b"]);
     expect(mockTypingSnapshot.cursorPosition).toEqual(1);
@@ -29,7 +27,7 @@ describe("delete command", () => {
 
     const node = del({ amount: 2, instant: true }) as DeleteTypingNode;
 
-    deleteTypingNodeHandler(node, mockTypingSnapshot, container);
+    deleteTypingNodeHandler(node, mockTypingSnapshot);
 
     expect(mockTypingSnapshot.content).toEqual([
       "<strong>",
@@ -50,7 +48,7 @@ describe("delete command", () => {
 
     const node = del({ amount: 1, instant: true }) as DeleteTypingNode;
 
-    deleteTypingNodeHandler(node, mockTypingSnapshot, container);
+    deleteTypingNodeHandler(node, mockTypingSnapshot);
 
     expect(mockTypingSnapshot.content).toEqual([
       "a",
@@ -70,7 +68,7 @@ describe("delete command", () => {
 
     const node = del({ amount: 1000, instant: true }) as DeleteTypingNode;
 
-    deleteTypingNodeHandler(node, mockTypingSnapshot, container);
+    deleteTypingNodeHandler(node, mockTypingSnapshot);
 
     expect(mockTypingSnapshot.content).toEqual([
       "a",

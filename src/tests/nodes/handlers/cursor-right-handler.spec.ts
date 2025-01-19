@@ -4,8 +4,6 @@ import { CursorMoveRightTypingNode } from "@/lib/nodes/nodes.types";
 import { MIN_POSSIBLE_CURSOR_POSITION } from "@/lib/shared/constants";
 import { describe, expect, test } from "vitest";
 
-const container = document.createElement("div");
-
 describe("cursorRight command", () => {
   test("cursorRight basic", () => {
     const mockTypingSnapshot: TypingSnapshot = {
@@ -15,7 +13,7 @@ describe("cursorRight command", () => {
 
     const node = cursorRight(2, { instant: true }) as CursorMoveRightTypingNode;
 
-    cursorMoveRightTypingNodeHandler(node, mockTypingSnapshot, container);
+    cursorMoveRightTypingNodeHandler(node, mockTypingSnapshot);
 
     expect(mockTypingSnapshot.content).toEqual(["a", "b", "c", "d"]);
     expect(mockTypingSnapshot.cursorPosition).toEqual(2);
@@ -29,7 +27,7 @@ describe("cursorRight command", () => {
 
     const node = cursorRight(2, { instant: true }) as CursorMoveRightTypingNode;
 
-    cursorMoveRightTypingNodeHandler(node, mockTypingSnapshot, container);
+    cursorMoveRightTypingNodeHandler(node, mockTypingSnapshot);
 
     expect(mockTypingSnapshot.content).toEqual([
       "a",
@@ -52,7 +50,7 @@ describe("cursorRight command", () => {
       instant: true,
     }) as CursorMoveRightTypingNode;
 
-    cursorMoveRightTypingNodeHandler(node, mockTypingSnapshot, container);
+    cursorMoveRightTypingNodeHandler(node, mockTypingSnapshot);
 
     expect(mockTypingSnapshot.content).toEqual([
       "a",

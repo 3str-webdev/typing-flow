@@ -6,11 +6,10 @@ import { getTypingSnapshotIndexData } from "@/lib/shared/utils/typing-snapshot";
 export function backspaceTypingNodeHandler(
   node: BackspaceTypingNode,
   typingSnapshot: TypingSnapshot,
-  rootContainer: HTMLElement,
 ) {
   if (typingSnapshot.cursorPosition < 0) return;
 
-  const buildedNode = node.nodeBuilder(rootContainer, typingSnapshot);
+  const buildedNode = node.nodeBuilder(typingSnapshot);
 
   let amountOfDeletedSymbols = 0;
 

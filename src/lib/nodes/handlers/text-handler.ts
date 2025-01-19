@@ -6,9 +6,8 @@ import { MIN_POSSIBLE_CURSOR_POSITION } from "@/lib/shared/constants";
 export function textTypingNodeHandler(
   node: TextTypingNode,
   typingSnapshot: TypingSnapshot,
-  rootContainer: HTMLElement,
 ) {
-  const buildedNode = node.nodeBuilder(rootContainer, typingSnapshot);
+  const buildedNode = node.nodeBuilder(typingSnapshot);
 
   const { indexOfSymbolWithCursor } =
     getTypingSnapshotIndexData(typingSnapshot);

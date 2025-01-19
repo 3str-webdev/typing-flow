@@ -3,8 +3,6 @@ import { text, textTypingNodeHandler } from "@/lib/nodes";
 import { MIN_POSSIBLE_CURSOR_POSITION } from "@/lib/shared/constants";
 import { describe, expect, test } from "vitest";
 
-const container = document.createElement("div");
-
 describe("text command", () => {
   test("text basic", () => {
     const mockTypingSnapshot: TypingSnapshot = {
@@ -15,7 +13,7 @@ describe("text command", () => {
     const nodes = text("ef", { instant: true });
 
     for (const node of nodes) {
-      textTypingNodeHandler(node, mockTypingSnapshot, container);
+      textTypingNodeHandler(node, mockTypingSnapshot);
     }
 
     expect(mockTypingSnapshot.content).toEqual(["a", "b", "c", "d", "e", "f"]);
@@ -31,7 +29,7 @@ describe("text command", () => {
     const nodes = text("<strong>ef</strong>", { instant: true });
 
     for (const node of nodes) {
-      textTypingNodeHandler(node, mockTypingSnapshot, container);
+      textTypingNodeHandler(node, mockTypingSnapshot);
     }
 
     expect(mockTypingSnapshot.content).toEqual([
@@ -56,7 +54,7 @@ describe("text command", () => {
     const nodes = text("<b></b>", { instant: true });
 
     for (const node of nodes) {
-      textTypingNodeHandler(node, mockTypingSnapshot, container);
+      textTypingNodeHandler(node, mockTypingSnapshot);
     }
 
     expect(mockTypingSnapshot.content).toEqual(["<b>", "</b>"]);
@@ -74,7 +72,7 @@ describe("text command", () => {
     const nodes = text("<span>ef</span>g", { instant: true });
 
     for (const node of nodes) {
-      textTypingNodeHandler(node, mockTypingSnapshot, container);
+      textTypingNodeHandler(node, mockTypingSnapshot);
     }
 
     expect(mockTypingSnapshot.content).toEqual([
@@ -100,7 +98,7 @@ describe("text command", () => {
     const nodes = text("<i>h</i>", { instant: true });
 
     for (const node of nodes) {
-      textTypingNodeHandler(node, mockTypingSnapshot, container);
+      textTypingNodeHandler(node, mockTypingSnapshot);
     }
 
     expect(mockTypingSnapshot.content).toEqual([
@@ -127,7 +125,7 @@ describe("text command", () => {
     const nodes = text(" ", { instant: true });
 
     for (const node of nodes) {
-      textTypingNodeHandler(node, mockTypingSnapshot, container);
+      textTypingNodeHandler(node, mockTypingSnapshot);
     }
 
     expect(mockTypingSnapshot.content).toEqual(["a", "b", " ", "c", "d"]);

@@ -7,11 +7,10 @@ import { MIN_POSSIBLE_CURSOR_POSITION } from "@/lib/shared/constants";
 export function deleteTypingNodeHandler(
   node: DeleteTypingNode,
   typingSnapshot: TypingSnapshot,
-  rootContainer: HTMLElement,
 ) {
   if (typingSnapshot.cursorPosition < MIN_POSSIBLE_CURSOR_POSITION) return;
 
-  const buildedNode = node.nodeBuilder(rootContainer, typingSnapshot);
+  const buildedNode = node.nodeBuilder(typingSnapshot);
 
   const { indexOfSymbolWithCursor } =
     getTypingSnapshotIndexData(typingSnapshot);

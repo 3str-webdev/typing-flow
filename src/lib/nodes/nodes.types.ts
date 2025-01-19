@@ -16,7 +16,6 @@ type WithType<T extends string, P> = {
 };
 
 type NodeBuilder<T> = (
-  rootContainer: HTMLElement,
   typingSnapshot: TypingSnapshot,
 ) => T;
 
@@ -26,7 +25,6 @@ export type TextTypingNode = WithType<
     text: string;
     instant: boolean;
     delay: number;
-    container: HTMLElement | ChildNode;
     isTag: boolean;
   }>
 >;

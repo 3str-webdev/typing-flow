@@ -6,9 +6,8 @@ import { isTagString } from "@/lib/shared/utils/browser";
 export function cursorMoveRightTypingNodeHandler(
   node: CursorMoveRightTypingNode,
   typingSnapshot: TypingSnapshot,
-  rootContainer: HTMLElement,
 ) {
-  const buildedNode = node.nodeBuilder(rootContainer, typingSnapshot);
+  const buildedNode = node.nodeBuilder(typingSnapshot);
 
   const { indexOfSymbolWithCursor } =
     getTypingSnapshotIndexData(typingSnapshot);
