@@ -7,7 +7,7 @@ import {
 } from "../shared/constants";
 import { HtmlRendererConfig } from "./renderer.types";
 
-export function unstable_htmlRenderer({
+export function htmlRenderer({
   selector,
   baseNodeClasses = ["typing-node"],
   nodeWithCursorClasses = ["typing-node_with-cursor"],
