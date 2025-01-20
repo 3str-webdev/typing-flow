@@ -27,7 +27,7 @@ export class NodeHandlersModule {
 
   protected _nodeHandlers: Record<
     TypingNode["type"],
-    (rootContainer: HTMLElement, node: TypingNode, index: number) => void
+    (node: TypingNode, index: number) => void
   > = {
     text: this._handleTextTypingNode.bind(this),
     backspace: this._handleBackspaceTypingNode.bind(this),
@@ -39,39 +39,24 @@ export class NodeHandlersModule {
     end: this._handleEndTypingNode.bind(this),
   };
 
-  private _handleTextTypingNode(
-    rootContainer: HTMLElement,
-    node: TextTypingNode,
-  ) {
-    textTypingNodeHandler(node, this._typingSnapshot, rootContainer);
+  private _handleTextTypingNode(node: TextTypingNode) {
+    textTypingNodeHandler(node, this._typingSnapshot);
   }
 
-  private _handleBackspaceTypingNode(
-    rootContainer: HTMLElement,
-    node: BackspaceTypingNode,
-  ) {
-    backspaceTypingNodeHandler(node, this._typingSnapshot, rootContainer);
+  private _handleBackspaceTypingNode(node: BackspaceTypingNode) {
+    backspaceTypingNodeHandler(node, this._typingSnapshot);
   }
 
-  private _handleDeleteTypingNode(
-    rootContainer: HTMLElement,
-    node: DeleteTypingNode,
-  ) {
-    deleteTypingNodeHandler(node, this._typingSnapshot, rootContainer);
+  private _handleDeleteTypingNode(node: DeleteTypingNode) {
+    deleteTypingNodeHandler(node, this._typingSnapshot);
   }
 
-  private _handleCursorMoveLeftTypingNode(
-    rootContainer: HTMLElement,
-    node: CursorMoveLeftTypingNode,
-  ) {
-    cursorMoveLeftTypingNodeHandler(node, this._typingSnapshot, rootContainer);
+  private _handleCursorMoveLeftTypingNode(node: CursorMoveLeftTypingNode) {
+    cursorMoveLeftTypingNodeHandler(node, this._typingSnapshot);
   }
 
-  private _handleCursorMoveRightTypingNode(
-    rootContainer: HTMLElement,
-    node: CursorMoveRightTypingNode,
-  ) {
-    cursorMoveRightTypingNodeHandler(node, this._typingSnapshot, rootContainer);
+  private _handleCursorMoveRightTypingNode(node: CursorMoveRightTypingNode) {
+    cursorMoveRightTypingNodeHandler(node, this._typingSnapshot);
   }
 
   private _handleDelayTypingNode() {

@@ -31,8 +31,7 @@ import {
 
 // Step 1. Create instance
 const flow = new TypingFlow({
-  selector: ".test",
-  renderer: simpleBrowserRenderer(),
+  renderer: simpleBrowserRenderer({ selector: ".test" }),
   loop: true,
 });
 

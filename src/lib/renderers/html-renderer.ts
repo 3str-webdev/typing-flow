@@ -1,16 +1,24 @@
-import { TypingSnapshot } from "@/lib/shared/types";
-import { typingFlowDOMParser } from "../shared/utils/browser";
-import { BrowserRendererConfig } from "./renderer.types";
+import { TypingFlowError } from "@/lib/shared/errors";
+import { RendererType, TypingSnapshot } from "@/lib/shared/types";
+import { typingFlowDOMParser } from "@/lib/shared/utils/browser";
 import {
   MIN_POSSIBLE_CURSOR_POSITION,
   ZERO_WIDTH_SPACE,
 } from "../shared/constants";
+import { HtmlRendererConfig } from "./renderer.types";
 
 export function unstable_htmlRenderer({
+  selector,
   baseNodeClasses = ["typing-node"],
   nodeWithCursorClasses = ["typing-node_with-cursor"],
-}: BrowserRendererConfig = {}) {
-  return (rootContainer: HTMLElement, typingSnapshot: TypingSnapshot) => {
+}: HtmlRendererConfig): RendererType {
+  const rootContainer = document.querySelector(selector) as HTMLElement;
+
+  if (!rootContainer) {
+    throw TypingFlowError.ContainerNotFoundException(selector);
+  }
+
+  return (typingSnapshot: TypingSnapshot) => {
     let currentCharIndex = 0;
 
     rootContainer.innerHTML = "";

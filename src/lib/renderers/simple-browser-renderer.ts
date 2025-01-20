@@ -1,16 +1,24 @@
-import { TypingSnapshot } from "@/lib/shared/types";
-import { BrowserRendererConfig } from "./renderer.types";
+import { TypingFlowError } from "@/lib/shared/errors";
+import { RendererType, TypingSnapshot } from "@/lib/shared/types";
 import {
   MIN_POSSIBLE_CURSOR_POSITION,
   ZERO_WIDTH_SPACE,
 } from "../shared/constants";
+import { BrowserRendererConfig } from "./renderer.types";
 
 export function simpleBrowserRenderer({
+  selector,
   baseNodeClasses = ["typing-node"],
   nodeWithCursorClasses = ["typing-node_with-cursor"],
-}: BrowserRendererConfig = {}) {
-  return (rootContainer: HTMLElement, typingSnapshot: TypingSnapshot) => {
-    rootContainer.innerHTML = "";
+}: BrowserRendererConfig): RendererType {
+  const container = document.querySelector(selector) as HTMLElement;
+
+  if (!container) {
+    throw TypingFlowError.ContainerNotFoundException(selector);
+  }
+
+  return (typingSnapshot: TypingSnapshot) => {
+    container.innerHTML = "";
 
     // add a zero-width space for correct render empty content with cursor
     if (typingSnapshot.cursorPosition === MIN_POSSIBLE_CURSOR_POSITION) {
@@ -35,7 +43,7 @@ export function simpleBrowserRenderer({
         htmlWrapper.classList.add(...baseNodeClasses);
       }
 
-      rootContainer.appendChild(htmlWrapper);
+      container.appendChild(htmlWrapper);
     }
   };
 }
